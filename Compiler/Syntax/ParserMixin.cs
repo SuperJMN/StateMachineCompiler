@@ -1,7 +1,7 @@
 ﻿using Superpower;
 using Superpower.Parsers;
 
-namespace Compiler
+namespace Smc.Syntax
 {
     public static class ParserMixin
     {

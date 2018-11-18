@@ -1,9 +1,9 @@
-﻿using Compiler;
+﻿using Smc.Syntax;
 using Superpower;
 using Superpower.Model;
 using Xunit;
 
-namespace UncleBobFsm
+namespace Smc.Tests
 {
     public class IndividualParserSpecs
     {
@@ -23,12 +23,28 @@ namespace UncleBobFsm
         [Fact]
         public void Subtransitions()
         {
-            var input = @"{
-		                        Pass	Alarming	-
-		                        Coin	FirstCoin	-
-	                        }";
+            var input = @"{ Pass Alarming - Coin FirstCoin - }";
+            var expectation = @"
+                                { 
+                                    Pass Alarming { - } 
+                                    Coin FirstCoin { - } 
+                                }";
 
-            var parsed = Parsers.Subtransitions.Parse(Tokenize(input));
+            AssertParse(input, expectation);
+        }
+
+        private static void AssertParse(string input, string expectation)
+        {
+            var actual = Parsers.Subtransitions.Parse(Tokenize(input));
+            Assert.Equal(actual.ToString().Replace(" ", ""), expectation.Replace(" ", ""));
+        }
+
+        [Fact]
+        public void StateModifier()
+        {
+            var input = @">state";
+
+            var parsed = Parsers.StateModifier.Parse(Tokenize(input));
         }
 
         [Fact]
@@ -57,7 +73,7 @@ namespace UncleBobFsm
 
         private static TokenList<SmcToken> Tokenize(string input)
         {
-            return SmcTokenizer.Create().Tokenize(input);
+            return Tokenizer.Create().Tokenize(input);
         }
     }
 }

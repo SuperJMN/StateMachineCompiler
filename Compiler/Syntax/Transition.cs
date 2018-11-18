@@ -1,7 +1,6 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
-namespace Compiler
+namespace Smc.Syntax
 {
     public class Transition
     {
@@ -16,7 +15,7 @@ namespace Compiler
 
         public override string ToString()
         {
-            var subtransitionsStr = string.Join(Environment.NewLine, Subtransitions.Select(x => x.ToString()));
+            var subtransitionsStr = string.Join(" ", Subtransitions.Select(x => x.ToString()));
             return $@"{StateSpec}: {{{subtransitionsStr}}}";
         }
     }

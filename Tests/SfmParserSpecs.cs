@@ -1,16 +1,15 @@
-using System;
-using Compiler;
+using Smc.Syntax;
 using Xunit;
 
-namespace UncleBobFsm
+namespace Smc.Tests
 {
     public class SfmParserSpecs
     {
         [Fact]
         public void Test1()
         {
-            var smcTokenizer = SmcTokenizer.Create();
-            var sut = new SmcParser(smcTokenizer);
+            var smcTokenizer = Tokenizer.Create();
+            var sut = new Parser(smcTokenizer);
 
             var input = @"
                         Actions: Turnstile
@@ -24,7 +23,8 @@ namespace UncleBobFsm
 		                        Coin	FirstCoin	-
 	                        }
 	                        
-	                        Alarming : Base	<alarmOn >alarmOff -	-	-
+	                        Alarming : Base	<alarmOn >alarmOff { 
+                                -       -           -   }
 	                        
 	                        FirstCoin : Base {
 		                        Pass	Alarming	-
@@ -38,6 +38,7 @@ namespace UncleBobFsm
                         }";
 
             var tree = sut.Parse(input);
+            var str = tree.ToString();            
         }
     }
 }

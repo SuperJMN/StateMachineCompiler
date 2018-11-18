@@ -1,4 +1,4 @@
-﻿namespace Compiler
+﻿namespace Smc.Syntax
 {
     public enum SmcToken
     {

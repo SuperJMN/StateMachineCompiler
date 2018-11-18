@@ -2,9 +2,9 @@
 using Superpower.Parsers;
 using Superpower.Tokenizers;
 
-namespace Compiler
+namespace Smc.Syntax
 {
-    public class SmcTokenizer : Tokenizer<SmcToken>
+    public class Tokenizer : Tokenizer<SmcToken>
     {
         public static Tokenizer<SmcToken> Create()
         {
