@@ -24,7 +24,8 @@ namespace Smc.Tests
 	                        }
 	                        
 	                        Alarming : Base	<alarmOn >alarmOff { 
-                                -       -           -   }
+                                -       -           -   
+                            }
 	                        
 	                        FirstCoin : Base {
 		                        Pass	Alarming	-
@@ -38,7 +39,12 @@ namespace Smc.Tests
                         }";
 
             var tree = sut.Parse(input);
-            var str = tree.ToString();            
+            var formattingVisitor = new SyntaxFormatter();
+            tree.Accept(formattingVisitor);
+
+            var formatted = formattingVisitor.Text;
+
+            Assert.Equal(input, formatted);
         }
     }
 }

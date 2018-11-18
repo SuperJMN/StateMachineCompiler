@@ -1,4 +1,5 @@
-﻿using Superpower;
+﻿using System.Linq;
+using Superpower;
 using Superpower.Parsers;
 
 namespace Smc.Syntax
@@ -50,8 +51,9 @@ namespace Smc.Syntax
             from subTransitions in Subtransitions
             select new Transition(stateSpec, subTransitions);
 
-        public static readonly TokenListParser<SmcToken, Subtransition[]> Subtransitions =
-            Subtransition.Select(x => new[] {x}).Or(Subtransition.Many().Between(SmcToken.Lbrace, SmcToken.Rbrace));
+        public static readonly TokenListParser<SmcToken, Subtransitions> Subtransitions =
+            from subbs in Subtransition.Select(x => new[] {x}).Or(Subtransition.Many().Between(SmcToken.Lbrace, SmcToken.Rbrace))
+            select new Subtransitions(subbs.ToList());
 
         public static readonly TokenListParser<SmcToken, string> Action = 
             from name in Token.EqualTo(SmcToken.Hyphen).Value((string)null).Or(Name)
@@ -62,7 +64,7 @@ namespace Smc.Syntax
         
         public static readonly TokenListParser<SmcToken, FsmSyntax> Fsm =
             from headers in Header.Many()
-            from logic in Transition.Many().Between(SmcToken.Lbrace, SmcToken.Rbrace)
-            select new FsmSyntax(headers, logic);        
+            from transitions in Transition.Many().Between(SmcToken.Lbrace, SmcToken.Rbrace)
+            select new FsmSyntax(new Headers(headers.ToList()), new Logic(transitions.ToList()));        
     }
 }

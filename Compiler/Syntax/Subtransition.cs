@@ -1,6 +1,6 @@
 ﻿namespace Smc.Syntax
 {
-    public class Subtransition
+    public class Subtransition : ISyntax
     {
         public string Ev { get; }
         public string NextState { get; }
@@ -11,6 +11,11 @@
             Ev = ev;
             NextState = nextState;
             Actions = actions;
+        }
+
+        public void Accept(ISyntaxVisitor visitor)
+        {
+            visitor.Visit(this);
         }
     }
 }

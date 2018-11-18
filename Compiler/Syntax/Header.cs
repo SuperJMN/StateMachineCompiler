@@ -1,6 +1,6 @@
 ﻿namespace Smc.Syntax
 {
-    public class Header
+    public class Header : ISyntax
     {
         public string Name { get; }
         public string Value { get; }
@@ -14,6 +14,11 @@
         public override string ToString()
         {
             return $"{Name} {Value}";
+        }
+
+        public void Accept(ISyntaxVisitor visitor)
+        {
+            visitor.Visit(this);
         }
     }
 }

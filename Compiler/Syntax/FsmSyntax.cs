@@ -3,15 +3,20 @@ using System.Linq;
 
 namespace Smc.Syntax
 {
-    public class FsmSyntax
+    public class FsmSyntax : ISyntax
     {
-        public Header[] Headers { get; }
-        public Transition[] Logic { get; }
-
-        public FsmSyntax(Header[] headers, Transition[] logic)
+        public FsmSyntax(Headers headers, Logic logic)
         {
             Headers = headers;
             Logic = logic;
+        }
+
+        public Headers Headers { get; }
+        public Logic Logic { get; }
+
+        public void Accept(ISyntaxVisitor visitor)
+        {
+            visitor.Visit(this);
         }
 
         public override string ToString()
@@ -35,12 +40,10 @@ namespace Smc.Syntax
 
         private string FormatSubtransitions(IList<Subtransition> subtransitions)
         {
-            if (subtransitions.Count == 1)
-            {
-                return FormatSubTransition(subtransitions.First());
-            }
-            
-            var innerText = string.Join("\n", subtransitions.Select(subtransition => "    " + FormatSubTransition(subtransition)));
+            if (subtransitions.Count == 1) return FormatSubTransition(subtransitions.First());
+
+            var innerText = string.Join("\n",
+                subtransitions.Select(subtransition => "    " + FormatSubTransition(subtransition)));
             return $"{{\n{innerText}\n  }}";
         }
 
@@ -55,10 +58,7 @@ namespace Smc.Syntax
 
         private string FormatEvents(ICollection<string> actions)
         {
-            if (actions.Count == 1)
-            {
-                return FormatOptional(actions.First());
-            }
+            if (actions.Count == 1) return FormatOptional(actions.First());
 
             var inner = string.Join("\n", actions.Select(x => $"    {x}"));
             return $"\n{{{inner}\n";

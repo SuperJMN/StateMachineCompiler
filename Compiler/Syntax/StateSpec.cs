@@ -1,6 +1,6 @@
 ﻿namespace Smc.Syntax
 {
-    public class StateSpec
+    public class StateSpec : ISyntax
     {
         public string Name { get; }
         public StateModifier[] Modifiers { get; }
@@ -11,6 +11,11 @@
             Name = name;
             Modifiers = modifiers;
             IsSuperState = isSuperState;
+        }
+
+        public void Accept(ISyntaxVisitor visitor)
+        {
+            visitor.Visit(this);
         }
     }
 }
