@@ -73,9 +73,9 @@ namespace Smc.Syntax
         {
             var name = state.IsSuperState ? $"({state.Name})" : state.Name;
 
-            var super = state.Modifiers.Where(x => x.Kind == ModifierKind.SuperState).Select(x => ":" + x.Name);
-            var entry = state.Modifiers.Where(x => x.Kind == ModifierKind.EntryAction).Select(x => "<" + x.Name);
-            var exit = state.Modifiers.Where(x => x.Kind == ModifierKind.ExitAction).Select(x => ">" + x.Name);
+            var super = state.Modifiers.Where(x => x.Kind == ModifierKind.SuperState).Select(x => ":" + x.Values);
+            var entry = state.Modifiers.Where(x => x.Kind == ModifierKind.EntryAction).Select(x => ">" + x.Values);
+            var exit = state.Modifiers.Where(x => x.Kind == ModifierKind.ExitAction).Select(x => "<" + x.Values);
 
             var parts = new[] {name}.Concat(super).Concat(entry).Concat(exit);
 

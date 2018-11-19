@@ -3,12 +3,12 @@
     public class StateModifier
     {
         public ModifierKind Kind { get; }
-        public string Name { get; }
+        public string[] Values { get; }
 
-        public StateModifier(ModifierKind kind, string name)
+        public StateModifier(ModifierKind kind, string[] values)
         {
             Kind = kind;
-            Name = name;
+            Values = values;
         }
     }
 }

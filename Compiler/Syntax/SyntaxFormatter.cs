@@ -37,7 +37,7 @@ namespace Smc.Syntax
         {
             var ev = FormatOptional(subtransition.Ev);
             var nx = FormatOptional(subtransition.NextState);
-            var ac = FormatEvents(subtransition.Actions);
+            var ac = FormatActions(subtransition.Actions);
 
             builder.Append($"{ev} {nx} {ac}");
         }
@@ -46,13 +46,13 @@ namespace Smc.Syntax
         {
             var name = state.IsSuperState ? $"({state.Name})" : state.Name;
 
-            var super = state.Modifiers.Where(x => x.Kind == ModifierKind.SuperState).Select(x => ":" + x.Name);
-            var entry = state.Modifiers.Where(x => x.Kind == ModifierKind.EntryAction).Select(x => "<" + x.Name);
-            var exit = state.Modifiers.Where(x => x.Kind == ModifierKind.ExitAction).Select(x => ">" + x.Name);
+            var super = state.Modifiers.Where(x => x.Kind == ModifierKind.SuperState).SelectMany(x => x.Values).Select(x => ":" + x);
+            var entry = state.Modifiers.Where(x => x.Kind == ModifierKind.EntryAction).SelectMany(x => x.Values).Select(x => " <" + x);
+            var exit = state.Modifiers.Where(x => x.Kind == ModifierKind.ExitAction).SelectMany(x => x.Values).Select(x => " >" + x);
 
-            var parts = new[] {name}.Concat(super).Concat(entry).Concat(exit);
+            var modifiers = super.Concat(entry).Concat(exit);
 
-            builder.Append(string.Join(" ", parts));            
+            builder.Append(string.Concat(name, string.Concat(modifiers)));            
         }
 
         public void Visit(Headers headers)
@@ -66,11 +66,14 @@ namespace Smc.Syntax
 
         public void Visit(Logic logic)
         {
+            builder.AppendLine("{");
+
             foreach (var transition in logic)
-            {
+            {               
                 transition.Accept(this);
-                builder.AppendLine();
             }
+
+            builder.AppendLine("}");
         }
 
         public void Visit(Subtransitions subtransitions)
@@ -81,7 +84,8 @@ namespace Smc.Syntax
             }
             else
             {
-                builder.AppendLine(" {");
+                builder.AppendLine();
+                builder.AppendLine($"{Indent(1)}{{");
 
                 foreach (var subtransition in subtransitions)
                 {
@@ -94,12 +98,12 @@ namespace Smc.Syntax
             }
         }
 
-        private string FormatEvents(ICollection<string> actions)
+        private string FormatActions(ICollection<string> actions)
         {
             if (actions.Count == 1) return FormatOptional(actions.First());
 
-            var inner = string.Join("\n", actions.Select(x => $"{Indent(2)}{x}"));
-            return $"\n{{{inner}\n";
+            var inner = string.Join(" ", actions);
+            return $"{{{inner}}}";
         }
 
         private static string Indent(int i)

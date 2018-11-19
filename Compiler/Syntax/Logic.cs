@@ -5,7 +5,7 @@ namespace Smc.Syntax
 {
     public class Logic : Collection<Transition>, ISyntax
     {
-        public Logic(List<Transition> toList) : base(toList)
+        public Logic(IList<Transition> toList) : base(toList)
         {
         }
 
