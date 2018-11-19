@@ -14,17 +14,12 @@ namespace Smc.Syntax
             from value in Name
             select new Header(name, value);
 
-        public static readonly TokenListParser<SmcToken, string> Event =
-            from name in Token.EqualTo(SmcToken.Hyphen).Value((string)null).Or(Name)
-            select name;
-
-        public static readonly TokenListParser<SmcToken, string> NextState =
-            from name in Token.EqualTo(SmcToken.Hyphen).Value((string)null).Or(Name)
+        private static readonly TokenListParser<SmcToken, string> OptionalName = from name in Token.EqualTo(SmcToken.Hyphen).Value((string)null).Or(Name)
             select name;
 
         public static readonly TokenListParser<SmcToken, Subtransition> Subtransition =
-            from ev in Event
-            from nextState in NextState
+            from ev in OptionalName
+            from nextState in OptionalName
             from actions in Actions
             select new Subtransition(ev, nextState, actions);
 
@@ -52,8 +47,7 @@ namespace Smc.Syntax
             select new Transition(stateSpec, subTransitions);
         
         private static readonly TokenListParser<SmcToken, Subtransition[]> MultipleSubtransition = 
-            Subtransition
-            .Many().Between(SmcToken.Lbrace, SmcToken.Rbrace);
+            Subtransition.Many().Between(SmcToken.Lbrace, SmcToken.Rbrace);
 
         private static readonly TokenListParser<SmcToken, Subtransition[]> SingleSubtransition = Subtransition
             .Select(x => new[] { x });
@@ -62,13 +56,10 @@ namespace Smc.Syntax
             from subt in MultipleSubtransition.Or(SingleSubtransition)
             select new Subtransitions(subt.ToList());
 
-        public static readonly TokenListParser<SmcToken, string> Action =
-            from name in Token.EqualTo(SmcToken.Hyphen).Value((string)null).Or(Name)
-            select name;
-
-        public static readonly TokenListParser<SmcToken, string[]> Actions = Action
+        public static readonly TokenListParser<SmcToken, string[]> Actions = 
+            OptionalName
             .Select(x => new[] { x })
-            .Or(Action.Many().Between(SmcToken.Lbrace, SmcToken.Rbrace))
+            .Or(OptionalName.Many().Between(SmcToken.Lbrace, SmcToken.Rbrace))
             .Select(s => s.Where(x => x != null).ToArray());
 
         public static readonly TokenListParser<SmcToken, Logic> Logic = from ta in Transition.Many().Between(SmcToken.Lbrace, SmcToken.Rbrace)
