@@ -41,8 +41,8 @@ The syntax is quite easy to understand:
 
 - The first 3 lines are the **header**.
 - After the header, there is a block enclosed with braces, this block is the definition of the **transitions** of the Finite State Machine (FSM)
-- Each each transition consists of 4 values: `current state, event, next state, actions`
-  For instance `dry rain wet { getUmbrella, getCoat }. That means: given the "dry" state, when the `rain` event is received, turn to the `wet` state and execute the `getUmbrella` and `getCoat` actions
+- Each each transition consists of 4 values: `current state, event, next state, actions`. Notice that the actions can be 0 or more values enclosed by braces, like {action1, action2, ...)
+  For instance `dry rain wet { getUmbrella, getCoat }`. That means: given the "dry" state, when the `rain` event is received, turn to the `wet` state and execute the `getUmbrella` and `getCoat` actions
 - However, the transitions of one state can be grouped under a block like this:
 	```
 	currentState 
