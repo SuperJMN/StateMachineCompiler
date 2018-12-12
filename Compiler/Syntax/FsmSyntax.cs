@@ -35,7 +35,7 @@ namespace Smc.Syntax
 
         private string FormatTransition(Transition transition)
         {
-            return "  " + FormatState(transition.StateSpec) + " " + FormatSubtransitions(transition.Subtransitions);
+            return "  " + FormatState(transition.State) + " " + FormatSubtransitions(transition.Subtransitions);
         }
 
         private string FormatSubtransitions(IList<Subtransition> subtransitions)
@@ -49,7 +49,7 @@ namespace Smc.Syntax
 
         private string FormatSubTransition(Subtransition arg)
         {
-            var ev = FormatOptional(arg.Ev);
+            var ev = FormatOptional(arg.Event);
             var nx = FormatOptional(arg.NextState);
             var ac = FormatEvents(arg.Actions);
 
@@ -71,7 +71,7 @@ namespace Smc.Syntax
 
         private string FormatState(StateSpec state)
         {
-            var name = state.IsSuperState ? $"({state.Name})" : state.Name;
+            var name = state.IsAbstract ? $"({state.Name})" : state.Name;
 
             var super = state.Modifiers.Where(x => x.Kind == ModifierKind.SuperState).Select(x => ":" + x.Values);
             var entry = state.Modifiers.Where(x => x.Kind == ModifierKind.EntryAction).Select(x => ">" + x.Values);

@@ -6,13 +6,14 @@ namespace Smc.Tests
 {
     public class IndividualParserSpecs
     {
-        [Fact]
-        public void DerivedState()
+        private static void AssertParseResult<T>(string input, string expectation,
+            TokenListParser<SmcToken, T> transition) where T : ISyntax
         {
-            var input = @"s:ss e ns a";
-            var expectation = "  s:ss e ns a\r\n";
-
-            AssertParseResult(input, expectation, Parsers.Transition);
+            var syntax = transition.Parse(Tokenizer.Create().Tokenize(input));
+            var formatter = new SyntaxFormatter();
+            syntax.Accept(formatter);
+            var formatted = formatter.Text;
+            Assert.Equal(expectation, formatted);
         }
 
         [Fact]
@@ -24,23 +25,12 @@ namespace Smc.Tests
         }
 
         [Fact]
-        public void StateWithNoSubTransitions()
+        public void DerivedState()
         {
-            var input = @"s {}";
-            var expectation = "  s \r\n  {\r\n  }\r\n";
+            var input = @"s:ss e ns a";
+            var expectation = "  s:ss e ns a\r\n";
+
             AssertParseResult(input, expectation, Parsers.Transition);
-        }
-
-        [Fact]
-        public void StateWithAllDashes()
-        {
-            AssertParseResult("s - - -", "  s - - {}\r\n", Parsers.Transition);
-        }
-
-        [Fact]
-        public void MultipleSuperStates()
-        {
-            AssertParseResult("s :x :y - - -", "  s:x:y - - {}\r\n", Parsers.Transition);
         }
 
         [Fact]
@@ -48,33 +38,6 @@ namespace Smc.Tests
         {
             var input = @"s <ea e ns a";
             var expectation = "  s <ea e ns a\r\n";
-
-            AssertParseResult(input, expectation, Parsers.Transition);
-        }
-
-        [Fact]
-        public void MultipleEntryActions()
-        {
-            var input = @"s <x <y - - -";
-            var expectation = "  s <x <y - - {}\r\n";
-
-            AssertParseResult(input, expectation, Parsers.Transition);
-        }
-
-        [Fact]
-        public void MultipleExitActions()
-        {
-            var input = @"s >x >y - - -";
-            var expectation = "  s >x >y - - {}\r\n";
-
-            AssertParseResult(input, expectation, Parsers.Transition);
-        }
-
-        [Fact]
-        public void MultipleEntryAndExitActionsWithBraces()
-        {
-            var input = @"s <{u v} >{w x} - - -";
-            var expectation = "  s <u <v >w >x - - {}\r\n";
 
             AssertParseResult(input, expectation, Parsers.Transition);
         }
@@ -101,11 +64,58 @@ namespace Smc.Tests
         }
 
         [Fact]
+        public void MultipleEntryActions()
+        {
+            var input = @"s <x <y - - -";
+            var expectation = "  s <x <y - - {}\r\n";
+
+            AssertParseResult(input, expectation, Parsers.Transition);
+        }
+
+        [Fact]
+        public void MultipleEntryAndExitActionsWithBraces()
+        {
+            var input = @"s <{u v} >{w x} - - -";
+            var expectation = "  s <u <v >w >x - - {}\r\n";
+
+            AssertParseResult(input, expectation, Parsers.Transition);
+        }
+
+        [Fact]
+        public void MultipleExitActions()
+        {
+            var input = @"s >x >y - - -";
+            var expectation = "  s >x >y - - {}\r\n";
+
+            AssertParseResult(input, expectation, Parsers.Transition);
+        }
+
+        [Fact]
+        public void MultipleSuperStates()
+        {
+            AssertParseResult("s :x :y - - -", "  s:x:y - - {}\r\n", Parsers.Transition);
+        }
+
+        [Fact]
         public void SimpleTransition()
         {
             var input = @"s e ns a";
             var expectation = "  s e ns a\r\n";
 
+            AssertParseResult(input, expectation, Parsers.Transition);
+        }
+
+        [Fact]
+        public void StateWithAllDashes()
+        {
+            AssertParseResult("s - - -", "  s - - {}\r\n", Parsers.Transition);
+        }
+
+        [Fact]
+        public void StateWithNoSubTransitions()
+        {
+            var input = @"s {}";
+            var expectation = "  s \r\n  {\r\n  }\r\n";
             AssertParseResult(input, expectation, Parsers.Transition);
         }
 
@@ -130,8 +140,8 @@ namespace Smc.Tests
         public void SuperState()
         {
             AssertParseResult("{(ss) e s a}", "{\r\n" +
-                                         "  (ss) e s a\r\n" +
-                                         "}\r\n", Parsers.Logic);
+                                              "  (ss) e s a\r\n" +
+                                              "}\r\n", Parsers.Logic);
         }
 
         [Fact]
@@ -150,16 +160,6 @@ namespace Smc.Tests
             var expectation = "  s e ns {}\r\n";
 
             AssertParseResult(input, expectation, Parsers.Transition);
-        }
-
-        private static void AssertParseResult<T>(string input, string expectation,
-            TokenListParser<SmcToken, T> transition) where T : ISyntax
-        {
-            var syntax = transition.Parse(Tokenizer.Create().Tokenize(input));
-            var formatter = new SyntaxFormatter();
-            syntax.Accept(formatter);
-            var formatted = formatter.Text;
-            Assert.Equal(expectation, formatted);
         }
     }
 }

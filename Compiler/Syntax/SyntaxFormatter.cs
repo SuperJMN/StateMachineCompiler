@@ -27,7 +27,7 @@ namespace Smc.Syntax
         public void Visit(Transition transition)
         {
             builder.Append(Indent(1));
-            transition.StateSpec.Accept(this);
+            transition.State.Accept(this);
             builder.Append(" ");
             transition.Subtransitions.Accept(this);
             builder.AppendLine();
@@ -35,7 +35,7 @@ namespace Smc.Syntax
 
         public void Visit(Subtransition subtransition)
         {
-            var ev = FormatOptional(subtransition.Ev);
+            var ev = FormatOptional(subtransition.Event);
             var nx = FormatOptional(subtransition.NextState);
             var ac = FormatActions(subtransition.Actions);
 
@@ -44,7 +44,7 @@ namespace Smc.Syntax
 
         public void Visit(StateSpec state)
         {
-            var name = state.IsSuperState ? $"({state.Name})" : state.Name;
+            var name = state.IsAbstract ? $"({state.Name})" : state.Name;
 
             var super = state.Modifiers.Where(x => x.Kind == ModifierKind.SuperState).SelectMany(x => x.Values).Select(x => ":" + x);
             var entry = state.Modifiers.Where(x => x.Kind == ModifierKind.EntryAction).SelectMany(x => x.Values).Select(x => " <" + x);

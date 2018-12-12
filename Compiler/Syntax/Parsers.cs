@@ -36,10 +36,10 @@ namespace Smc.Syntax
         public static readonly TokenListParser<SmcToken, StateModifier[]> StateModifiers = StateModifier.Many();
 
         public static readonly TokenListParser<SmcToken, StateSpec> StateSpec =
-            from state in Name.Between(SmcToken.Lparen, SmcToken.Rparen).Select(x => new { Name = x, IsSuper = true })
-                .Or(Name.Select(s => new { Name = s, IsSuper = false }))
+            from state in Name.Between(SmcToken.Lparen, SmcToken.Rparen).Select(x => new { Name = x, IsAbstract = true })
+                .Or(Name.Select(s => new { Name = s, IsAbstract = false }))
             from modifiers in StateModifiers
-            select new StateSpec(state.Name, modifiers, state.IsSuper);
+            select new StateSpec(state.Name, modifiers, state.IsAbstract);
 
         public static readonly TokenListParser<SmcToken, Transition> Transition =
             from stateSpec in StateSpec

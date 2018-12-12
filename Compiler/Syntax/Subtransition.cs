@@ -2,13 +2,13 @@
 {
     public class Subtransition : ISyntax
     {
-        public string Ev { get; }
+        public string Event { get; }
         public string NextState { get; }
         public string[] Actions { get; }
 
         public Subtransition(string ev, string nextState, string[] actions)
         {
-            Ev = ev;
+            Event = ev;
             NextState = nextState;
             Actions = actions;
         }
