@@ -61,3 +61,4 @@ There are some cool features to make it easier to define the states:
 # Credits
 
 - [Robert C. Martin](https://twitter.com/unclebobmartin) for his wonderful lessons at [Clean Coders](https://cleancoders.com/)
+- [Nicholas Blumhardt](https://github.com/nblumhardt) for the great parser combinator library [Superpower](https://github.com/nblumhardt/superpower)
