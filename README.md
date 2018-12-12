@@ -1,7 +1,7 @@
-# StateMachineCompiler
-State Machine Compiler inspired by Uncle Bob
+# State Machine Compiler
+State Machine Compiler inspired by [Robert C. Martin](https://twitter.com/unclebobmartin), AKA "Uncle Bob", and his work.
 
-This is the State Machine Compiler (SMC) that Robert C. Martin builds in episodes [28](https://cleancoders.com/episode/clean-code-episode-28/show), [29](https://cleancoders.com/episode/clean-code-episode-29/show) and [30](https://cleancoders.com/episode/clean-code-episode-30/show) of [Clean Coders](https://cleancoders.com/)
+This the State Machine Compiler (SMC) that Robert C. Martin builds in episodes [28](https://cleancoders.com/episode/clean-code-episode-28/show), [29](https://cleancoders.com/episode/clean-code-episode-29/show) and [30](https://cleancoders.com/episode/clean-code-episode-30/show) of [Clean Coders](https://cleancoders.com/), built from scratch in C#. 
 
 It can be used to create Finite State Machines in several programming languages, like Java, C, Python, and C#, of course. In fact, it's built on C# 😄
 
