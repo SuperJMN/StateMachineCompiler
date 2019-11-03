@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2050
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29409.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smc", "Compiler\Smc.csproj", "{7F272719-ED81-4177-AD9C-D2C21EC783E3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smc.Tests", "Tests\Smc.Tests.csproj", "{5AD690E0-2D46-4D6C-8636-7ECDB4D7457F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmcTool", "SmcTool\SmcTool.csproj", "{C9E3FC2F-235C-4E58-A74C-A534FE3467C4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{5AD690E0-2D46-4D6C-8636-7ECDB4D7457F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5AD690E0-2D46-4D6C-8636-7ECDB4D7457F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5AD690E0-2D46-4D6C-8636-7ECDB4D7457F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9E3FC2F-235C-4E58-A74C-A534FE3467C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9E3FC2F-235C-4E58-A74C-A534FE3467C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9E3FC2F-235C-4E58-A74C-A534FE3467C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9E3FC2F-235C-4E58-A74C-A534FE3467C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

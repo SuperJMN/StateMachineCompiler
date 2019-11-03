@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "SmcTool": {
+      "commandName": "Project",
+      "commandLineArgs": "--InputFile C:\\Users\\JMN\\Desktop\\FSM.txt --OutputFile C:\\Users\\JMN\\Desktop\\Converted.cs"
+    }
+  }
+}
